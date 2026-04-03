@@ -3,7 +3,6 @@
 A standalone terminal animation module for Python projects.
 No external dependencies required.
 ![demo](asset/img1.png)
-
 *Banner animation running in terminal*
 ---
 

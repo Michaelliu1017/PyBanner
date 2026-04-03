@@ -1,0 +1,281 @@
+import os
+import time
+import random
+import datetime
+import platform
+
+# ─────────────────────────────────────────────
+# banner(para) — ASCII logo
+#   0 : 噪点浮现效果 (orange █)
+#   1 : 菱形字符 (orange ◆)
+#   2 : 原版星号 (*)
+#   3 : 噪点浮现效果 ◆ (orange  ◆)
+#   4 : 颜色渐变
+# ─────────────────────────────────────────────
+
+def banner(para=0):
+    seed = "00080909000409490251409504612094067110920007719200086183000950930009923300095273000940940008454500080909"
+    #**********************
+    #*     1              *
+    #**********************
+    if para == 0:
+        # ── 噪点浮现效果 ──────────────────────────────
+        ORANGE="\033[38;5;202m" # "\033[38;5;208m" brighter
+        DIM, RESET ="\033[38;5;202m", "\033[0m"
+
+       ## noise = ["░", "▒", "▓", "·", ":", " "]
+        noise = ["░",  "▒", "▒"," "]
+
+        lines = []
+        for i in range(13):
+            s = int(seed[-8*(i+1):-8*i or None])
+            lines.append("".join(" "*(s//10**j%10) + "█"*(s//10**(j+1)%10) for j in range(0,8,2)))
+
+        width = max(len(l) for l in lines)
+
+        for frame in range(20):
+            output = []
+            for line in lines:
+                row = ""
+                for ch in line.ljust(width):
+                    if ch == "█":
+                        if random.random() < frame / 19:
+                            row += f"{ORANGE}█{RESET}"
+                        else:
+                            row += f"{DIM}{random.choice(noise)}{RESET}"
+                    else:
+                        if random.random() < (1 - frame / 19) * 0.4:
+                            row += f"{DIM}{random.choice(noise)}{RESET}"
+                        else:
+                            row += " "
+                output.append(row)
+
+            print("\n".join(output))
+            time.sleep(0.06)
+            print(f"\033[{len(lines)}A", end="")
+
+        for line in lines:
+            s_clean = "".join(f"{ORANGE}█{RESET}" if c == "█" else " " for c in line.ljust(width))
+            print(s_clean)
+    # **********************
+    # *     2              *
+    # **********************
+    elif para == 1:
+        # ── 菱形字符 ─────────────────────────────────
+        ORANGE, RESET = "\033[38;5;202m", "\033[0m"
+        for i in range(13):
+            s = int(seed[-8*(i+1):-8*i or None])
+            line = "".join(" "*(s//10**j%10) + f"{ORANGE}◆{RESET}"*(s//10**(j+1)%10) for j in range(0,8,2))
+            print(line)
+            time.sleep(0.05)
+    # **********************
+    # *     3              *
+    # **********************
+    elif para == 2:
+        # ── 原版星号 ─────────────────────────────────
+        for i in range(13):
+            s = int(seed[-8*(i+1):-8*i or None])
+            line = "".join(" "*(s//10**j%10) + "*"*(s//10**(j+1)%10) for j in range(0,8,2))
+            print(line)
+            time.sleep(0.05)
+    # **********************
+    # *     4              *
+    # **********************
+    elif para ==3 :
+        # ── 噪点浮现效果 ──────────────────────────────
+        ORANGE, DIM, RESET = "\033[38;5;208m", "\033[38;5;202m", "\033[0m"
+        noise = ["░", "▒", "▓", "·", ":", " "]
+
+        lines = []
+        for i in range(13):
+            s = int(seed[-8 * (i + 1):-8 * i or None])
+            lines.append("".join(" " * (s // 10 ** j % 10) + "◆" * (s // 10 ** (j + 1) % 10) for j in range(0, 8, 2)))
+
+        width = max(len(l) for l in lines)
+
+        for frame in range(20):
+            output = []
+            for line in lines:
+                row = ""
+                for ch in line.ljust(width):
+                    if ch == "◆":
+                        if random.random() < frame / 19:
+                            row += f"{ORANGE}◆{RESET}"
+                        else:
+                            row += f"{DIM}{random.choice(noise)}{RESET}"
+                    else:
+                        if random.random() < (1 - frame / 19) * 0.4:
+                            row += f"{DIM}{random.choice(noise)}{RESET}"
+                        else:
+                            row += " "
+                output.append(row)
+
+            print("\n".join(output))
+            time.sleep(0.06)
+            print(f"\033[{len(lines)}A", end="")
+
+        for line in lines:
+            s_clean = "".join(f"{ORANGE}◆{RESET}" if c == "◆" else " " for c in line.ljust(width))
+            print(s_clean)
+    # **********************
+    # *     5              *
+    # **********************
+    elif para == 4:
+        # 橙色梯度从暗到亮：52 → 166 → 202 → 208
+        GRADIENT = [
+            "\033[38;5;52m",  # 极暗棕红
+            "\033[38;5;88m",  # 暗红
+            "\033[38;5;130m",  # 暗橙
+            "\033[38;5;166m",  # 中橙
+            "\033[38;5;202m",  # 标准橙
+            "\033[38;5;208m",  # 亮橙
+        ]
+        RESET = "\033[0m"
+
+        lines = []
+        for i in range(13):
+            s = int(seed[-8 * (i + 1):-8 * i or None])
+            lines.append("".join(" " * (s // 10 ** j % 10) + "█" * (s // 10 ** (j + 1) % 10) for j in range(0, 8, 2)))
+
+        width = max(len(l) for l in lines)
+        steps = len(GRADIENT)
+
+        for frame in range(steps):
+            color = GRADIENT[frame]
+            output = []
+            for line in lines:
+                row = "".join(f"{color}█{RESET}" if c == "█" else " " for c in line.ljust(width))
+                output.append(row)
+            print("\n".join(output))
+            time.sleep(0.08)
+            print(f"\033[{len(lines)}A", end="")
+
+        # 最终定格亮橙
+        for line in lines:
+            row = "".join(f"\033[38;5;208m█{RESET}" if c == "█" else " " for c in line.ljust(width))
+            print(row)
+    # **********************
+    # *     6              *
+    # **********************
+    elif para == 5:
+        # 橙色梯度从暗到亮：52 → 166 → 202 → 208
+        GRADIENT = [
+            "\033[38;5;52m",  # 极暗棕红
+            "\033[38;5;88m",  # 暗红
+            "\033[38;5;130m",  # 暗橙
+            "\033[38;5;166m",  # 中橙
+            "\033[38;5;202m",  # 标准橙
+            "\033[38;5;208m",  # 亮橙
+        ]
+        RESET = "\033[0m"
+
+        lines = []
+        for i in range(13):
+            s = int(seed[-8 * (i + 1):-8 * i or None])
+            lines.append("".join(" " * (s // 10 ** j % 10) + "◆" * (s // 10 ** (j + 1) % 10) for j in range(0, 8, 2)))
+
+        width = max(len(l) for l in lines)
+        steps = len(GRADIENT)
+
+        for frame in range(steps):
+            color = GRADIENT[frame]
+            output = []
+            for line in lines:
+                row = "".join(f"{color}◆{RESET}" if c == "◆" else " " for c in line.ljust(width))
+                output.append(row)
+            print("\n".join(output))
+            time.sleep(0.08)
+            print(f"\033[{len(lines)}A", end="")
+
+        # 最终定格亮橙
+        for line in lines:
+            row = "".join(f"\033[38;5;208m◆{RESET}" if c == "◆" else " " for c in line.ljust(width))
+            print(row)
+    else:
+        print(f"[ERROR] banner({para}) — valid options: 0, 1, 2,3")
+
+
+# ─────────────────────────────────────────────
+# info(para) — program info block
+#   0 : RRAgent 项目信息
+#   1 : 最简版（只显示项目名和时间）
+# ─────────────────────────────────────────────
+
+def info(para=0, **kwargs):
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    os_info      = platform.platform()
+    ORANGE, RESET, BOLD = "\033[38;5;208m", "\033[0m", "\033[1m"
+
+    fields = [
+        ("PROJECT", kwargs.get("project",     "Project XX")),
+        ("VERSION", kwargs.get("version",     "1.0")),
+        ("ENV",     kwargs.get("environment", "Development")),
+        ("OS",      os_info),
+        ("INFO",    kwargs.get("extra",       "Project Information")),
+    ]
+
+    description = kwargs.get("description", "A self-improving wargame agent.")
+    status      = kwargs.get("status",      "Initializing... All systems nominal. Awaiting game connection.")
+
+    icon = "█" if para == 0 else "◆"
+
+    print()
+    for label, value in fields:
+        print(f"  {ORANGE}{BOLD}{icon}{RESET}  {label:<10}{value}")
+    print()
+
+    for char in description:
+        print(f"{ORANGE}{char}{RESET}", end="", flush=True)
+        time.sleep(0.03 if char != " " else 0.01)
+    print("\n")
+
+    for char in status:
+        print(f"{ORANGE}{char}{RESET}", end="", flush=True)
+        time.sleep(0.03 if char != " " else 0.01)
+    print("\n")
+
+# ─────────────────────────────────────────────
+# other(para) — decorative elements
+#   0 : 竖条从中间展开
+#   1 : 文字从噪点中浮现（显示项目名）
+# ─────────────────────────────────────────────
+
+def other(para=0, **kwargs):
+
+    if para == 0:
+        # ── 竖条从中间展开 ────────────────────────────
+        width = kwargs.get("width", 36)
+        for i in range(width // 2):
+            left  = width // 2 - i
+            right = width // 2 + i
+            line  = " " * left + "\033[38;5;214m" + "█" * (right - left) + "\033[0m"
+            print(f"\r{line}", end="", flush=True)
+            time.sleep(0.03)
+        print()
+
+    elif para == 1:
+        # ── 文字从噪点中浮现 ──────────────────────────
+        title = kwargs.get("title", "RRAgent")
+        chars = "▓▒░·:"
+        for step in range(15):
+            line = ""
+            for c in title.center(30):
+                if random.random() < step / 14:
+                    line += f"\033[38;5;208m{c}\033[0m"
+                else:
+                    line += f"\033[38;5;238m{random.choice(chars)}\033[0m"
+            print("\r" + line, end="", flush=True)
+            time.sleep(0.08)
+        print()
+    elif para == 2:
+        # ── 竖条从中间展开 ────────────────────────────
+        width = kwargs.get("width", 36)
+        for i in range(width // 2):
+            left = width // 2 - i
+            right = width // 2 + i
+            line = " " * left + "\033[38;5;214m" + "◆" * (right - left) + "\033[0m"
+            print(f"\r{line}", end="", flush=True)
+            time.sleep(0.03)
+        print()
+    else:
+        print(f"[ERROR] other({para}) — valid options: 0, 1")

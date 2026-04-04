@@ -233,7 +233,11 @@ def banner(para=0):
     # *     8  扫描    *
     # **********************
     elif para == 7:
-        ORANGE, SCAN, RESET = "\033[38;5;208m", "\033[38;5;226m", "\033[0m"
+
+        #ORANGE="\033[38;5;208m" # Bright Orange
+        ORANGE="\033[38;5;202m" # Mid Orange
+        SCAN="\033[38;5;226m" # yellow
+        RESET ="\033[0m"
 
         lines = []
         for i in range(13):
@@ -367,7 +371,7 @@ def banner(para=0):
                     row += " "
             print(row)
     else:
-        print(f"[ERROR] banner({para}) — valid options: 0, 1, 2, 3")
+        print(f"[ERROR] banner({para}) — valid options: 0, 1, 2, 3,...")
 
 
 # ─────────────────────────────────────────────
@@ -423,14 +427,14 @@ def effect(para=0, **kwargs):
         for i in range(width // 2):
             left  = width // 2 - i
             right = width // 2 + i
-            line  = " " * left + "\033[38;5;214m" + "█" * (right - left) + "\033[0m"
+            line  = " " * left + "\033[38;5;208m" + "█" * (right - left) + "\033[0m"
             print(f"\r{line}", end="", flush=True)
             time.sleep(0.03)
         print()
 
     elif para == 1:
         # ── 文字从噪点中浮现 ──────────────────────────
-        title = kwargs.get("title", "RRAgent")
+        title = kwargs.get("description", "RRAgent")
         chars = "▓▒░·:"
         for step in range(15):
             line = ""
@@ -440,7 +444,7 @@ def effect(para=0, **kwargs):
                 else:
                     line += f"\033[38;5;238m{random.choice(chars)}\033[0m"
             print("\r" + line, end="", flush=True)
-            time.sleep(0.08)
+            time.sleep(0.05)
         print()
     elif para == 2:
         # ── 竖条从中间展开 ────────────────────────────
@@ -452,6 +456,81 @@ def effect(para=0, **kwargs):
             print(f"\r{line}", end="", flush=True)
             time.sleep(0.03)
         print()
+    elif para == 3:
+        width = kwargs.get("width", 40)
+        ORANGE, RESET = "\033[38;5;208m", "\033[0m"
+        for i in range(width + 1):
+            line = "─" * i + ("►" if i < width else "─")
+            print(f"\r{ORANGE}{line}{RESET}", end="", flush=True)
+            time.sleep(0.02)
+        print()
+    elif para == 4:
+        width = kwargs.get("width", 40)
+        ORANGE, RESET = "\033[38;5;208m", "\033[0m"
+        for i in range(width + 1):
+            line = "░" * i + ("█" if i < width else "░")
+            print(f"\r{ORANGE}{line}{RESET}", end="", flush=True)
+            time.sleep(0.02)
+        print()
+    elif para == 5:
+        width = kwargs.get("width", 40)
+        ORANGE, RESET = "\033[38;5;208m", "\033[0m"
+        for i in range(width // 2 + 1):
+            left = "─" * i
+            right = "─" * i
+            mid = " " * (width - i * 2)
+            print(f"\r{ORANGE}{left}{mid}{right}{RESET}", end="", flush=True)
+            time.sleep(0.03)
+        print()
+    elif para == 6:
+        import math
+        width = kwargs.get("width", 40)
+        ORANGE, RESET = "\033[38;5;208m", "\033[0m"
+        chars = "·∙●∙·"
+        for frame in range(20):
+            line = ""
+            for x in range(width):
+                wave = math.sin(x * 0.4 + frame * 0.3)
+                idx = int((wave + 1) / 2 * (len(chars) - 1))
+                line += chars[idx]
+            print(f"\r{ORANGE}{line}{RESET}", end="", flush=True)
+            time.sleep(0.05)
+        print()
+    elif para == 7:
+        width = kwargs.get("width", 40)
+        ORANGE, RESET = "\033[38;5;208m", "\033[0m"
+        # 先打点
+        dots = ""
+        for _ in range(width):
+            dots += "·"
+            print(f"\r{ORANGE}{dots}{RESET}", end="", flush=True)
+            time.sleep(0.02)
+        # 再变实线
+        for i in range(width):
+            line = "━" * i + "·" * (width - i)
+            print(f"\r{ORANGE}{line}{RESET}", end="", flush=True)
+            time.sleep(0.02)
+        print()
+    elif para == 8:
+        title = kwargs.get("title", "RRAgent")
+        chars = "▓▒░ "
+        for step in range(15):
+            line = ""
+            for c in title.center(30):
+                if random.random() < step / 14:
+                    line += f"\033[38;5;208m{c}\033[0m"
+                else:
+                    line += f"\033[38;5;238m{random.choice(chars)}\033[0m"
+            print("\r" + line, end="", flush=True)
+            time.sleep(0.05)
+        print()
+    elif para == 9:
+        ORANGE, RESET, BOLD = "\033[38;5;208m", "\033[0m", "\033[1m"
+        description = kwargs.get("description", "Program Description")
+        for char in description:
+            print(f"{ORANGE}{char}{RESET}", end="", flush=True)
+            time.sleep(0.03 if char != " " else 0.01)
+        print("\n")
     else:
         print(f"[ERROR] other({para}) — valid options: 0, 1")
 

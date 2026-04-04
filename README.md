@@ -6,6 +6,7 @@
 
 A lightweight Python module for animated terminal banners. No external dependencies required.
 
+<img name="assets/img2.png" width="200" alt="demo">
 ---
 
 ## Installation

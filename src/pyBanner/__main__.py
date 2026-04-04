@@ -1,7 +1,9 @@
-from banner import banner, info, other
+from banner import banner, info, effect
 
 # Try it
 # read the Info in banner.py
-banner(0)
-other(1, title="RRAgent")
-info(0, project="RRAgent", environment="Dev", version="1.0")
+banner(7)
+effect(1, title="Project Title")
+info(0, project="R&R Agent", environment="Dev", version="1.0")
+
+

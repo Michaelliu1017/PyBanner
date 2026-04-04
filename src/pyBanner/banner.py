@@ -11,12 +11,13 @@ import platform
 #   2 : 原版星号 (*)
 #   3 : 噪点浮现效果 ◆ (orange  ◆)
 #   4 : 颜色渐变
+
 # ─────────────────────────────────────────────
 
 def banner(para=0):
     seed = "00080909000409490251409504612094067110920007719200086183000950930009923300095273000940940008454500080909"
     #**********************
-    #*     1              *
+    #*   1   噪点浮现效果   *
     #**********************
     if para == 0:
         # ── 噪点浮现效果 ──────────────────────────────
@@ -58,7 +59,7 @@ def banner(para=0):
             s_clean = "".join(f"{ORANGE}█{RESET}" if c == "█" else " " for c in line.ljust(width))
             print(s_clean)
     # **********************
-    # *     2              *
+    # *     2   菱形字符    *
     # **********************
     elif para == 1:
         # ── 菱形字符 ─────────────────────────────────
@@ -69,7 +70,7 @@ def banner(para=0):
             print(line)
             time.sleep(0.05)
     # **********************
-    # *     3              *
+    # *     3    原版       *
     # **********************
     elif para == 2:
         # ── 原版星号 ─────────────────────────────────
@@ -79,7 +80,7 @@ def banner(para=0):
             print(line)
             time.sleep(0.05)
     # **********************
-    # *     4              *
+    # *  4 噪点浮现效果 ◆    *
     # **********************
     elif para ==3 :
         # ── 噪点浮现效果 ──────────────────────────────
@@ -118,7 +119,7 @@ def banner(para=0):
             s_clean = "".join(f"{ORANGE}◆{RESET}" if c == "◆" else " " for c in line.ljust(width))
             print(s_clean)
     # **********************
-    # *     5              *
+    # *     5    渐变色     *
     # **********************
     elif para == 4:
         # 橙色梯度从暗到亮：52 → 166 → 202 → 208
@@ -155,7 +156,7 @@ def banner(para=0):
             row = "".join(f"\033[38;5;208m█{RESET}" if c == "█" else " " for c in line.ljust(width))
             print(row)
     # **********************
-    # *     6              *
+    # *     6   渐变色 ◆    *
     # **********************
     elif para == 5:
         # 橙色梯度从暗到亮：52 → 166 → 202 → 208
@@ -191,8 +192,180 @@ def banner(para=0):
         for line in lines:
             row = "".join(f"\033[38;5;208m◆{RESET}" if c == "◆" else " " for c in line.ljust(width))
             print(row)
+    # **********************
+    # *     7    从上到下   *
+    # **********************
+    elif para == 6:
+        ORANGE, DIM, RESET = "\033[38;5;208m", "\033[38;5;202m", "\033[0m"
+
+        lines = []
+        for i in range(13):
+            s = int(seed[-8 * (i + 1):-8 * i or None])
+            lines.append("".join(" " * (s // 10 ** j % 10) + "█" * (s // 10 ** (j + 1) % 10) for j in range(0, 8, 2)))
+
+        width = max(len(l) for l in lines)
+        H = len(lines)
+
+        # 从上往下逐行揭开
+        for reveal in range(H + 1):
+            output = []
+            for row_i, line in enumerate(lines):
+                row = ""
+                for ch in line.ljust(width):
+                    if ch == "█":
+                        if row_i < reveal:
+                            row += f"{ORANGE}█{RESET}"
+                        else:
+                            row += f"{DIM} {RESET}"
+                    else:
+                        row += " "
+                output.append(row)
+            print("\n".join(output))
+            time.sleep(0.08)
+            print(f"\033[{H}A", end="")
+
+        for line in lines:
+            print("".join(f"{ORANGE}█{RESET}" if c == "█" else " " for c in line.ljust(width)))
+
+    # **********************
+    # *     8  扫描    *
+    # **********************
+    elif para == 7:
+        ORANGE, SCAN, RESET = "\033[38;5;208m", "\033[38;5;226m", "\033[0m"
+
+        lines = []
+        for i in range(13):
+            s = int(seed[-8 * (i + 1):-8 * i or None])
+            lines.append("".join(" " * (s // 10 ** j % 10) + "█" * (s // 10 ** (j + 1) % 10) for j in range(0, 8, 2)))
+
+        width = max(len(l) for l in lines)
+        H = len(lines)
+
+        # 扫描线从上到下扫两遍
+        for _ in range(1):
+            for scan_row in range(H):
+                output = []
+                for row_i, line in enumerate(lines):
+                    row = ""
+                    for ch in line.ljust(width):
+                        if ch == "█":
+                            if row_i == scan_row:
+                                row += f"{SCAN}█{RESET}"  # 扫描线亮黄
+                            elif row_i < scan_row:
+                                row += f"{ORANGE}█{RESET}"  # 已扫描橙色
+                            else:
+                                row += f"\033[38;5;238m█{RESET}"  # 未扫描暗色
+                        else:
+                            row += " "
+                    output.append(row)
+                print("\n".join(output))
+                time.sleep(0.06)
+                print(f"\033[{H}A", end="")
+
+        for line in lines:
+            print("".join(f"{ORANGE}█{RESET}" if c == "█" else " " for c in line.ljust(width)))
+
+
+
+    # **********************
+    # *     9  — 波浪闪烁  *
+    # **********************
+    elif para == 8:
+        import math
+        RESET = "\033[0m"
+
+        lines = []
+        for i in range(13):
+            s = int(seed[-8 * (i + 1):-8 * i or None])
+            lines.append("".join(" " * (s // 10 ** j % 10) + "█" * (s // 10 ** (j + 1) % 10) for j in range(0, 8, 2)))
+
+        width = max(len(l) for l in lines)
+        H = len(lines)
+
+        # 橙色梯度
+        palette = [166, 172, 178, 202, 208, 214, 220, 214, 208, 202]
+        # 灰色梯度
+        #palette = [236, 238, 240, 242, 244, 246, 244, 242, 240, 238]
+        for frame in range(30):
+            print(f"\033[{H}A" if frame > 0 else "", end="")
+            for row_i, line in enumerate(lines):
+                row = ""
+                for col_i, ch in enumerate(line.ljust(width)):
+                    if ch == "█":
+                        wave = math.sin(frame * 0.1 + col_i * 0.4 + row_i * 0.5)
+                        idx = int((wave + 1) / 2 * (len(palette) - 1))
+                        color = f"\033[38;5;{palette[idx]}m"
+                        row += f"{color}█{RESET}"
+                    else:
+                        row += " "
+                print(row)
+            time.sleep(0.06)
+
+        # 定格在最后一帧波动的样子（不重置为纯色）
+        last_frame = 29
+        print(f"\033[{H}A", end="")
+        for row_i, line in enumerate(lines):
+            row = ""
+            for col_i, ch in enumerate(line.ljust(width)):
+                if ch == "█":
+                    wave = math.sin(last_frame * 0.3 + col_i * 0.4 + row_i * 0.5)
+                    idx = int((wave + 1) / 2 * (len(palette) - 1))
+                    color = f"\033[38;5;{palette[idx]}m"
+                    row += f"{color}█{RESET}"
+                else:
+                    row += " "
+            print(row)
+
+        # **********************
+        # *     10  — 波浪闪烁  *
+        # **********************
+    elif para == 9:
+        import math
+        RESET = "\033[0m"
+
+        lines = []
+        for i in range(13):
+            s = int(seed[-8 * (i + 1):-8 * i or None])
+            lines.append("".join(" " * (s // 10 ** j % 10) + "█" * (s // 10 ** (j + 1) % 10) for j in range(0, 8, 2)))
+
+        width = max(len(l) for l in lines)
+        H = len(lines)
+
+        # 橙色梯度
+        # palette = [166, 172, 178, 202, 208, 214, 220, 214, 208, 202]
+        # 灰色梯度
+        palette = [236, 238, 240, 242, 244, 246, 244, 242, 240, 238]
+        for frame in range(30):
+            print(f"\033[{H}A" if frame > 0 else "", end="")
+            for row_i, line in enumerate(lines):
+                row = ""
+                for col_i, ch in enumerate(line.ljust(width)):
+                    if ch == "█":
+                        wave = math.sin(frame * 0.1 + col_i * 0.4 + row_i * 0.5)
+                        idx = int((wave + 1) / 2 * (len(palette) - 1))
+                        color = f"\033[38;5;{palette[idx]}m"
+                        row += f"{color}█{RESET}"
+                    else:
+                        row += " "
+                print(row)
+            time.sleep(0.06)
+
+        # 定格在最后一帧波动的样子（不重置为纯色）
+        last_frame = 29
+        print(f"\033[{H}A", end="")
+        for row_i, line in enumerate(lines):
+            row = ""
+            for col_i, ch in enumerate(line.ljust(width)):
+                if ch == "█":
+                    wave = math.sin(last_frame * 0.3 + col_i * 0.4 + row_i * 0.5)
+                    idx = int((wave + 1) / 2 * (len(palette) - 1))
+                    color = f"\033[38;5;{palette[idx]}m"
+                    row += f"{color}█{RESET}"
+                else:
+                    row += " "
+            print(row)
     else:
-        print(f"[ERROR] banner({para}) — valid options: 0, 1, 2,3")
+        print(f"[ERROR] banner({para}) — valid options: 0, 1, 2, 3")
 
 
 # ─────────────────────────────────────────────
@@ -214,8 +387,8 @@ def info(para=0, **kwargs):
         ("INFO",    kwargs.get("extra",       "Project Information")),
     ]
 
-    description = kwargs.get("description", "A self-improving wargame agent.")
-    status      = kwargs.get("status",      "Initializing... All systems nominal. Awaiting game connection.")
+    description = kwargs.get("description", "Program Description")
+    status      = kwargs.get("status",      "Initializing... ")
 
     icon = "█" if para == 0 else "◆"
 
@@ -240,7 +413,7 @@ def info(para=0, **kwargs):
 #   1 : 文字从噪点中浮现（显示项目名）
 # ─────────────────────────────────────────────
 
-def other(para=0, **kwargs):
+def effect(para=0, **kwargs):
 
     if para == 0:
         # ── 竖条从中间展开 ────────────────────────────
@@ -279,3 +452,4 @@ def other(para=0, **kwargs):
         print()
     else:
         print(f"[ERROR] other({para}) — valid options: 0, 1")
+

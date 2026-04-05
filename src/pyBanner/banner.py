@@ -198,7 +198,7 @@ def banner(para=0):
     # *     7    从上到下   *
     # **********************
     elif para == 6:
-        ORANGE, DIM, RESET = "\033[38;5;208m", "\033[38;5;202m", "\033[0m"
+        ORANGE, DIM, RESET = "\033[38;5;202m", "\033[38;5;202m", "\033[0m"
 
         lines = []
         for i in range(13):

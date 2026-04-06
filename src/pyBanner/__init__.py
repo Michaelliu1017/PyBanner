@@ -1,1 +1,1 @@
-from .banner import banner, info, other
+from .banner import banner, info, effect

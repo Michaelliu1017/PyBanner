@@ -1,0 +1,713 @@
+:root {
+  color-scheme: dark;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+
+  --dgg-bg: #050605;
+  --dgg-deep: #080908;
+  --dgg-surface: #101210;
+  --dgg-object: #171a17;
+  --dgg-object-hover: #202420;
+  --dgg-line: #292d29;
+  --dgg-line-strong: #3c433c;
+  --dgg-edge: #485048;
+  --dgg-text: #f4f7f3;
+  --dgg-muted: #9fa69f;
+  --dgg-faint: #697169;
+
+  --dgg-accent: #58ff3d;
+  --dgg-accent-rgb: 88 255 61;
+  --dgg-accent-ink: #061106;
+  --dgg-accent-deep: #132f13;
+
+  --dgg-warning: #ffc85a;
+  --dgg-warning-rgb: 255 200 90;
+  --dgg-warning-deep: #3c3016;
+  --dgg-error: #fb7185;
+  --dgg-error-rgb: 251 113 133;
+  --dgg-error-deep: #421d25;
+
+  --dgg-radius: 6px;
+  --dgg-node-width: 226px;
+  --dgg-node-height: 82px;
+  --dgg-context-width: 218px;
+  --dgg-context-height: 76px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 320px;
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--dgg-bg);
+  color: var(--dgg-text);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  letter-spacing: 0;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--dgg-accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: rgb(var(--dgg-accent-rgb) / 24%);
+}
+
+.dgg-primary,
+.dgg-secondary,
+.dgg-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: var(--dgg-radius);
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease,
+    opacity 160ms ease;
+}
+
+.dgg-primary {
+  min-height: 36px;
+  gap: 8px;
+  padding: 0 14px;
+  border-color: rgb(var(--dgg-accent-rgb) / 78%);
+  background: var(--dgg-accent);
+  color: var(--dgg-accent-ink);
+  box-shadow:
+    0 0 0 1px rgb(var(--dgg-accent-rgb) / 16%),
+    0 0 18px rgb(var(--dgg-accent-rgb) / 18%);
+  font-size: 13px;
+  font-weight: 720;
+}
+
+.dgg-primary:hover {
+  box-shadow:
+    0 0 0 2px rgb(var(--dgg-accent-rgb) / 18%),
+    0 0 24px rgb(var(--dgg-accent-rgb) / 28%);
+  filter: brightness(1.08);
+}
+
+.dgg-secondary {
+  min-height: 34px;
+  gap: 7px;
+  padding: 0 12px;
+  border-color: var(--dgg-line-strong);
+  background: #181b18;
+  color: #dde2dd;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.dgg-secondary:hover {
+  border-color: #555d55;
+  background: var(--dgg-object-hover);
+}
+
+.dgg-icon-button {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-color: var(--dgg-line);
+  background: var(--dgg-surface);
+  color: var(--dgg-muted);
+}
+
+.dgg-icon-button:hover {
+  border-color: var(--dgg-line-strong);
+  background: var(--dgg-object-hover);
+  color: var(--dgg-text);
+}
+
+.dgg-primary:disabled,
+.dgg-secondary:disabled,
+.dgg-icon-button:disabled {
+  cursor: not-allowed;
+  filter: none;
+  opacity: 0.45;
+}
+
+.dgg-shell {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--dgg-bg);
+}
+
+.dgg-header {
+  display: flex;
+  min-height: 58px;
+  flex: 0 0 58px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--dgg-line);
+  background: var(--dgg-deep);
+}
+
+.dgg-workspace {
+  display: grid;
+  min-height: 0;
+  flex: 1;
+  grid-template-columns: minmax(210px, 258px) minmax(400px, 1fr) minmax(280px, 330px);
+}
+
+.dgg-sidebar,
+.dgg-inspector {
+  min-height: 0;
+  overflow: auto;
+  background: var(--dgg-surface);
+}
+
+.dgg-sidebar {
+  border-right: 1px solid var(--dgg-line);
+}
+
+.dgg-inspector {
+  border-left: 1px solid var(--dgg-line);
+}
+
+.dgg-main {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex-direction: column;
+  background: var(--dgg-bg);
+}
+
+.dgg-canvas {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+  background: var(--dgg-bg);
+}
+
+.dgg-timeline {
+  min-height: 43px;
+  flex: 0 0 43px;
+  border-top: 1px solid var(--dgg-line);
+  background: #0e110e;
+  transition:
+    min-height 200ms ease,
+    flex-basis 200ms ease;
+}
+
+.dgg-timeline.is-expanded {
+  min-height: 194px;
+  flex-basis: 194px;
+}
+
+/*
+ * Keep graph handles on the wrapper and all visual paint on the opaque surface.
+ * This prevents edges from leaking through hover or selected backgrounds.
+ */
+.dgg-node {
+  position: relative;
+  z-index: 10;
+  width: var(--dgg-node-width);
+  height: var(--dgg-node-height);
+  isolation: isolate;
+}
+
+.dgg-node__surface {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 13px;
+  overflow: hidden;
+  border: 1px solid rgb(var(--dgg-accent-rgb) / 46%);
+  border-radius: 7px;
+  background: var(--dgg-object);
+  box-shadow:
+    0 0 0 2px rgb(var(--dgg-accent-rgb) / 5%),
+    0 8px 22px rgb(0 0 0 / 28%);
+  transition:
+    filter 180ms ease,
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.dgg-node:not(.is-selected):not(.is-error):not(.is-warning):hover
+  .dgg-node__surface {
+  border-color: rgb(var(--dgg-accent-rgb) / 78%);
+  background:
+    linear-gradient(
+      rgb(var(--dgg-accent-rgb) / 8%),
+      rgb(var(--dgg-accent-rgb) / 8%)
+    ),
+    var(--dgg-object);
+  box-shadow:
+    0 0 0 3px rgb(var(--dgg-accent-rgb) / 8%),
+    0 0 20px rgb(var(--dgg-accent-rgb) / 15%),
+    0 8px 22px rgb(0 0 0 / 28%);
+  transform: translateY(-1px);
+}
+
+.dgg-node:focus-visible {
+  outline: none;
+}
+
+.dgg-node:focus-visible .dgg-node__surface,
+.dgg-node:focus-within .dgg-node__surface {
+  outline: 2px solid var(--dgg-accent);
+  outline-offset: 3px;
+}
+
+.dgg-node.is-selected {
+  z-index: 20;
+}
+
+.dgg-node.is-selected .dgg-node__surface {
+  border-color: rgb(var(--dgg-accent-rgb) / 90%);
+  background:
+    linear-gradient(
+      rgb(var(--dgg-accent-rgb) / 50%),
+      rgb(var(--dgg-accent-rgb) / 50%)
+    ),
+    var(--dgg-object);
+  box-shadow:
+    0 0 0 3px rgb(var(--dgg-accent-rgb) / 16%),
+    0 0 28px rgb(var(--dgg-accent-rgb) / 28%),
+    inset 0 1px 0 rgb(255 255 255 / 28%),
+    0 10px 24px rgb(0 0 0 / 34%);
+  color: var(--dgg-accent-ink);
+}
+
+.dgg-node.is-related {
+  z-index: 14;
+}
+
+.dgg-node.is-active:not(.is-selected) .dgg-node__surface {
+  border-color: var(--dgg-accent);
+  background:
+    linear-gradient(
+      rgb(var(--dgg-accent-rgb) / 13%),
+      rgb(var(--dgg-accent-rgb) / 13%)
+    ),
+    var(--dgg-object);
+  box-shadow:
+    0 0 0 4px rgb(var(--dgg-accent-rgb) / 8%),
+    0 0 22px rgb(var(--dgg-accent-rgb) / 16%);
+  animation: dgg-live-node 2s ease-in-out infinite;
+}
+
+.dgg-node.is-warning .dgg-node__surface {
+  border-color: rgb(var(--dgg-warning-rgb) / 78%);
+  background:
+    linear-gradient(
+      rgb(var(--dgg-warning-rgb) / 12%),
+      rgb(var(--dgg-warning-rgb) / 12%)
+    ),
+    var(--dgg-object);
+}
+
+.dgg-node.is-error .dgg-node__surface {
+  border-color: rgb(var(--dgg-error-rgb) / 86%);
+  background:
+    linear-gradient(
+      rgb(var(--dgg-error-rgb) / 15%),
+      rgb(var(--dgg-error-rgb) / 15%)
+    ),
+    var(--dgg-object);
+  box-shadow:
+    0 0 0 3px rgb(var(--dgg-error-rgb) / 8%),
+    0 0 22px rgb(var(--dgg-error-rgb) / 16%),
+    0 8px 22px rgb(0 0 0 / 28%);
+}
+
+.dgg-node.is-manual .dgg-node__surface {
+  border-style: dashed;
+}
+
+.dgg-node.is-dimmed:not(.is-related):not(.is-selected) .dgg-node__surface {
+  filter: brightness(0.34) saturate(0.32);
+}
+
+.dgg-node.is-obscured:not(.is-related):not(.is-selected)
+  .dgg-node__surface {
+  filter: blur(6px) brightness(0.2) saturate(0.2);
+}
+
+.dgg-node.is-obscured:not(.is-related):not(.is-selected) {
+  pointer-events: none;
+}
+
+.dgg-node__icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  place-items: center;
+  border: 1px solid #3a403a;
+  border-radius: 5px;
+  background: #0d0f0d;
+  color: #c2c8c2;
+}
+
+.dgg-node__copy {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  gap: 6px;
+}
+
+.dgg-node__copy strong,
+.dgg-node__copy span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dgg-node__copy strong {
+  color: #edf0ed;
+  font-size: 12px;
+}
+
+.dgg-node__copy span {
+  color: var(--dgg-faint);
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+.dgg-node.is-selected .dgg-node__icon {
+  border-color: rgb(0 0 0 / 42%);
+  background: rgb(0 0 0 / 28%);
+  color: var(--dgg-accent-ink);
+}
+
+.dgg-node.is-selected .dgg-node__copy strong {
+  color: var(--dgg-accent-ink);
+}
+
+.dgg-node.is-selected .dgg-node__copy span {
+  color: rgb(0 0 0 / 70%);
+}
+
+.dgg-node.is-warning .dgg-node__icon,
+.dgg-node.is-manual .dgg-node__icon {
+  border-color: #765e32;
+  background: var(--dgg-warning-deep);
+  color: var(--dgg-warning);
+}
+
+.dgg-node.is-error .dgg-node__icon {
+  border-color: #79404b;
+  background: var(--dgg-error-deep);
+  color: var(--dgg-error);
+}
+
+.dgg-context {
+  position: relative;
+  z-index: 30;
+  width: var(--dgg-context-width);
+  height: var(--dgg-context-height);
+  isolation: isolate;
+  border-radius: 7px;
+  animation: dgg-context-enter 220ms cubic-bezier(0.2, 0.72, 0.2, 1) both;
+}
+
+.dgg-context::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  background: rgb(43 48 43 / 86%);
+  box-shadow: 0 10px 28px rgb(0 0 0 / 38%);
+  backdrop-filter: blur(28px) saturate(70%);
+  -webkit-backdrop-filter: blur(28px) saturate(70%);
+  content: "";
+  pointer-events: none;
+}
+
+.dgg-context__surface {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  overflow: hidden;
+  border: 1px solid rgb(232 238 232 / 25%);
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      145deg,
+      rgb(238 243 238 / 16%),
+      rgb(150 158 150 / 8%) 46%,
+      rgb(44 49 44 / 18%)
+    ),
+    rgb(69 75 69 / 72%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 16%),
+    0 10px 28px rgb(0 0 0 / 34%);
+  backdrop-filter: blur(18px) saturate(115%);
+  -webkit-backdrop-filter: blur(18px) saturate(115%);
+  color: #eef2ee;
+  text-align: left;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.dgg-context__surface:hover {
+  border-color: rgb(255 255 255 / 42%);
+  background:
+    linear-gradient(
+      145deg,
+      rgb(255 255 255 / 19%),
+      rgb(170 178 170 / 10%) 46%,
+      rgb(48 53 48 / 20%)
+    ),
+    rgb(73 80 73 / 76%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 20%),
+    0 0 18px rgb(255 255 255 / 5%),
+    0 12px 30px rgb(0 0 0 / 38%);
+  transform: translateY(-1px);
+}
+
+.dgg-context__icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 17%);
+  border-radius: 5px;
+  background: rgb(15 18 15 / 52%);
+  color: #eef2ee;
+}
+
+.dgg-context__copy {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.dgg-context__copy small,
+.dgg-context__copy strong,
+.dgg-context__copy span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dgg-context__copy small {
+  color: #b9c0b9;
+  font-size: 8px;
+  text-transform: uppercase;
+}
+
+.dgg-context__copy strong {
+  color: #f2f5f2;
+  font-size: 11px;
+}
+
+.dgg-context__copy span {
+  color: #b2b9b2;
+  font-size: 9px;
+}
+
+.dgg-edge {
+  z-index: 2;
+  color: var(--dgg-edge);
+}
+
+.dgg-edge__path {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.2;
+  transition:
+    color 150ms ease,
+    filter 150ms ease,
+    stroke-width 150ms ease;
+}
+
+.dgg-edge__hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 14;
+  pointer-events: stroke;
+}
+
+.dgg-edge:hover {
+  color: #737d73;
+}
+
+.dgg-edge.is-related {
+  z-index: 8;
+  color: var(--dgg-accent);
+}
+
+.dgg-edge.is-related .dgg-edge__path {
+  stroke-width: 2;
+  filter: drop-shadow(0 0 5px rgb(var(--dgg-accent-rgb) / 68%));
+}
+
+.dgg-edge.is-manual .dgg-edge__path {
+  stroke-dasharray: 5 4;
+}
+
+.dgg-edge.is-warning {
+  color: var(--dgg-warning);
+}
+
+.dgg-edge.is-warning .dgg-edge__path {
+  stroke-width: 2;
+  filter: drop-shadow(0 0 4px rgb(var(--dgg-warning-rgb) / 48%));
+}
+
+.dgg-edge.is-error {
+  color: var(--dgg-error);
+}
+
+.dgg-edge.is-error .dgg-edge__path {
+  stroke-width: 2.25;
+  filter: drop-shadow(0 0 5px rgb(var(--dgg-error-rgb) / 56%));
+}
+
+.dgg-edge-label {
+  padding: 2px 4px;
+  border-radius: 3px;
+  background: var(--dgg-bg);
+  color: var(--dgg-faint);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 8px;
+  pointer-events: none;
+}
+
+.dgg-modal-backdrop {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgb(2 4 3 / 78%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.dgg-modal {
+  display: grid;
+  width: min(420px, 100%);
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid var(--dgg-line-strong);
+  border-radius: 8px;
+  background: #111311;
+  box-shadow: 0 20px 60px rgb(0 0 0 / 46%);
+}
+
+@keyframes dgg-live-node {
+  50% {
+    box-shadow:
+      0 0 0 7px rgb(var(--dgg-accent-rgb) / 4%),
+      0 0 30px rgb(var(--dgg-accent-rgb) / 20%);
+  }
+}
+
+@keyframes dgg-context-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 1120px) {
+  .dgg-workspace {
+    grid-template-columns: 220px minmax(380px, 1fr) 290px;
+  }
+}
+
+@media (max-width: 860px) {
+  .dgg-shell {
+    min-height: 100vh;
+    height: auto;
+    overflow: visible;
+  }
+
+  .dgg-header {
+    position: sticky;
+    z-index: 40;
+    top: 0;
+  }
+
+  .dgg-workspace {
+    display: block;
+  }
+
+  .dgg-sidebar {
+    height: 250px;
+    border-right: 0;
+    border-bottom: 1px solid var(--dgg-line);
+  }
+
+  .dgg-main {
+    min-height: 660px;
+  }
+
+  .dgg-inspector {
+    min-height: 440px;
+    border-top: 1px solid var(--dgg-line);
+    border-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}

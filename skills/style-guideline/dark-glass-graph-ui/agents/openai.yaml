@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dark Glass Graph UI"
+  short_description: "构建暗色、磨砂玻璃与单色泛光的交互图谱界面"
+  default_prompt: "Use $dark-glass-graph-ui to build this graph interface with true frosted glass, robust edge layering, and a restrained luminous accent."

@@ -534,3 +534,5 @@ def effect(para=0, **kwargs):
     else:
         print(f"[ERROR] other({para}) — valid options: 0, 1")
 
+
+# VisionOwl webhook synchronization probe: 2026-08-05

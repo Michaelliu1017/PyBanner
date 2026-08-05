@@ -110,6 +110,21 @@ from pyBanner import preview_card
 print(preview_card("Deploy ready", "Webhook update detected", theme="aurora", layout="wide"))
 ```
 
+## Banner Presets
+
+`banner_presets` combines a validated theme and layout for common scenarios.
+
+```python
+from banner_presets import get_preset
+
+preset = get_preset("docs")
+print(preset.theme.name, preset.layout.width)
+```
+
+Themes now include background and contrast metadata. Use
+`list_themes("dark")` or `list_themes("light")` to select a readable palette
+for the active terminal background.
+
 ---
 
 ## Requirements

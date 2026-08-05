@@ -4,6 +4,9 @@ import random
 import datetime
 import platform
 
+from banner_layouts import format_lines, get_layout
+from banner_themes import get_theme
+
 # ─────────────────────────────────────────────
 # banner(para) — ASCII logo
 #   0 : 噪点浮现效果 (orange █)
@@ -536,3 +539,18 @@ def effect(para=0, **kwargs):
 
 
 # VisionOwl webhook synchronization probe: 2026-08-05 (webhook enabled)
+
+
+def preview_card(title="PyBanner", subtitle="Animated terminal banners", theme="sunset", layout="standard"):
+    """Build a static ANSI preview using the shared theme and layout registries."""
+    selected_theme = get_theme(theme, strict=True)
+    selected_layout = get_layout(layout)
+    content = format_lines((title, subtitle), selected_layout)
+    border = "─" * selected_layout.width
+    return "\n".join(
+        [
+            f"{selected_theme.primary}┌{border}┐{selected_theme.reset}",
+            *(f"{selected_theme.accent}│{line}│{selected_theme.reset}" for line in content),
+            f"{selected_theme.primary}└{border}┘{selected_theme.reset}",
+        ]
+    )

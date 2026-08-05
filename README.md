@@ -98,6 +98,20 @@ effect(2, width=50)         # wider bar expand
 
 ---
 
+## Theme-aware Preview Card
+
+`preview_card()` combines the reusable `banner_themes` and `banner_layouts`
+modules. Theme aliases such as `orange` and layout aliases such as `full` are
+resolved automatically.
+
+```python
+from pyBanner import preview_card
+
+print(preview_card("Deploy ready", "Webhook update detected", theme="aurora", layout="wide"))
+```
+
+---
+
 ## Requirements
 
 - Python 3.9 – 3.13 *(not compatible with 3.14+)*
